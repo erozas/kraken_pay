@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html
 
-  gem 'faraday'
-  gem 'faraday_middleware'
-  gem 'oj'
+  spec.add_dependency 'faraday'
+  spec.add_dependency 'faraday_middleware'
+  spec.add_dependency 'oj'
 end
