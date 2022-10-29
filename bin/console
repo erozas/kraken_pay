@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "bundler/setup"
-require "kraken_pay"
+require 'bundler/setup'
+require 'kraken_pay'
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
@@ -11,5 +11,33 @@ require "kraken_pay"
 # require "pry"
 # Pry.start
 
-require "irb"
+KrakenPay.configure do |config|
+  config.api_endpoint = 'https://pagos.kraken.bo:8443/api/payments'
+  config.affiliate_code = '617ec678-1e0c-4813-97dc-f4fc0c4c7290'
+end
+
+params = { affiliateCode: '617ec678-1e0c-4813-97dc-f4fc0c4c7290',
+           withInvoice: false,
+           expireMinutes: 6320,
+           externalCode: '4adee5849f',
+           paymentDescription: 'Pago correspondiente al pedido 4adee5849f',
+           details: [{ concept: 'Matisse Castrados Salmón - 2 kg',
+                       productImageUrl: 'https://d34xtejqjqcp3x.cloudfront.net/store/2d4a8fea77d0b5898fa2f583b3de160c.png',
+                       quantity: 1,
+                       unitPrice: 0.86e2,
+                       sequence: 2 },
+                     { concept: 'Canada Litter Multicat - 18 kg',
+                       productImageUrl: 'https://d34xtejqjqcp3x.cloudfront.net/store/46de03b8d80d5970f7f64a10482f1393.webp',
+                       quantity: 1,
+                       unitPrice: 0.197e3,
+                       sequence: 2 },
+                     { concept: 'Peluche Zorro M-Pets - Rosa',
+                       productImageUrl: 'https://d34xtejqjqcp3x.cloudfront.net/store/9deb1d16932ff6cb579e618dce618f52.webp',
+                       quantity: 1,
+                       unitPrice: 0.22e2,
+                       sequence: 2 }] }
+
+client = KrakenPay::Client.new
+
+require 'irb'
 IRB.start(__FILE__)
