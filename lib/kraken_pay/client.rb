@@ -32,8 +32,29 @@ module KrakenPay
       { 'Content-Type' => 'application/json', 'Accept' => '*/*', 'Accept-Encoding' => 'gzip, deflate, br' }
     end
 
+    # Because of the way the API works: it doesn't return a status code for successfull requests
+    # We need to handle errors conditionally. If the response doesn't have a status code, it means
+    # That it was successfull. If it does, it means there was an error
     def handle_response(response)
-      response
+      parsed = JSON.parse(response.body)
+      return parsed unless parsed['status']
+
+      case parsed['status']
+      when 400
+        raise ApiError::BadRequestError, parsed['detail']
+      when 401
+        raise ApiError::UnauthorizedError, parsed['detail']
+      when 403
+        raise ApiError::ForbiddenError, parsed['detail']
+      when 404
+        raise ApiError::NotFoundError, parsed['detail']
+      when 422
+        raise ApiError::UnprocessableEntityError, parsed['detail']
+      when 429
+        raise ApiError::TooManyRequestsError, parsed['detail']
+      when 500
+        raise ApiError::InternalServerError, parsed['detail']
+      end
     end
   end
 end
