@@ -14,7 +14,7 @@ module KrakenPay
     end
 
     def generate_qr_payment(params)
-      response = HTTParty.post("#{BASE_URL}/process/bisa-qr", body: params.to_json, headers: default_headers)
+      response = HTTParty.post("#{BASE_URL}/process/simple", body: params.to_json, headers: default_headers)
     end
 
     def register_transaction(params)
@@ -23,7 +23,7 @@ module KrakenPay
     end
 
     def check_qr_payment_status(payment_id, transaction_id)
-      response = HTTParty.get("#{BASE_URL}/status/bisa-qr/#{payment_id}/#{transaction_id}", headers: default_headers)
+      response = HTTParty.get("#{BASE_URL}/status/simple/#{payment_id}/#{transaction_id}", headers: default_headers)
     end
 
     private
